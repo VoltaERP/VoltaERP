@@ -18,18 +18,14 @@ app.use(cors({
 app.use(express.json());
 
 //Le decimos a Express que todas las rutas de auth empiecen por /api/v1/auth
-app.use('/api/v1/auth', authRoutes);
+//app.use('/api/v1/auth', authRoutes);
 
 
 const port = process.env.PORT || 3000;
 
-app.listen(port,() => {
-    console.log(`🚀 Servidor escuchando en http://localhost:${port}`);
-})
-
-/*try{
+try{
     await db.authenticate()
-    await db.sync({alter:true})
+    await db.sync()
     console.log("✅ Conexion Correcta a la bd")
 
     app.listen(port,() => {
@@ -37,5 +33,5 @@ app.listen(port,() => {
 })
 }catch(error){
     console.log(error)
-}*/
+}
 
