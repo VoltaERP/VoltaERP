@@ -1,0 +1,47 @@
+<header class="flex items-center justify-between h-16 px-6 bg-white border-b border-slate-200">
+  <!-- Left: Context / Workspace -->
+  <div class="flex items-center gap-3">
+    <h1 class="text-base font-semibold text-slate-800">Panel Principal</h1>
+    <span class="text-xs text-slate-400">|</span>
+    <span class="text-xs font-medium text-slate-500">VoltaERP</span>
+  </div>
+
+  <!-- Right: User info & Actions -->
+  <div class="flex items-center gap-4">
+    <!-- Role badge -->
+    <span
+      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+      [class.bg-purple-100]="userRole() === 'ADMIN'"
+      [class.text-purple-800]="userRole() === 'ADMIN'"
+      [class.bg-blue-100]="userRole() === 'GESTOR'"
+      [class.text-blue-800]="userRole() === 'GESTOR'"
+      [class.bg-emerald-100]="userRole() === 'EMPLEADO'"
+      [class.text-emerald-800]="userRole() === 'EMPLEADO'"
+    >
+      {{ userRole() }}
+    </span>
+
+    <!-- User Profile -->
+    <div class="flex items-center gap-3 pl-2 border-l border-slate-200">
+      <div class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-800 text-white font-medium text-xs">
+        {{ userInitials() }}
+      </div>
+      <span class="text-sm font-medium text-slate-700 hidden sm:inline">
+        {{ userName() }}
+      </span>
+    </div>
+
+    <!-- Logout Button -->
+    <button
+      type="button"
+      (click)="logout()"
+      title="Cerrar sesión"
+      aria-label="Cerrar sesión"
+      class="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-rose-500"
+    >
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15m3 0 3-3m0 0-3-3m3 3H9" />
+      </svg>
+    </button>
+  </div>
+</header>
