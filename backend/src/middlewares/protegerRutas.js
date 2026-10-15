@@ -17,11 +17,13 @@ const protegerRuta = async (req, res, next)=> {
         const usuario = await Usuario.scope('eliminarPassword').findByPk(usuarioDecodificado.usuarioId)
         // 3. Guardamos los datos (el ID y el ROL que metimos antes) en la petición (req)
         // Así los controladores sabrán exactamente quién está haciendo la petición
-        if(usuario){
-            req.usuario = usuario
-        }else{
-            return res.status(403).json({ error: 'Acceso denegado. Se requiere un token de seguridad.' });
+        if (!usuario) {
+            return res.status(401).json({ error: 'Usuario no encontrado o sesión inválida.' });
         }
+        if (!usuario.activo) {
+            return res.status(403).json({ error: 'Usuario desactivado. Contacta con un administrador.' });
+        }
+        req.usuario = usuario;
 
         // 4. Le decimos a Express: "Todo correcto, déjale pasar a la ruta que ha pedido"
         return next();
