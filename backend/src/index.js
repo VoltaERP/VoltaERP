@@ -5,7 +5,7 @@ import db from './config/db.js'
 import './models/index.js'
 import authRoutes from './routes/auth.routes.js'
 import errorHandler from "./middlewares/errorHandler.js";
-
+import usuariosRoutes from './routes/usuarios.routes.js'
 
 const app = express();
 
@@ -20,6 +20,7 @@ app.use(express.json());
 
 //Le decimos a Express que todas las rutas de auth empiecen por /api/auth
 app.use('/api/auth', authRoutes);
+app.use('/api/usuarios', usuariosRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
