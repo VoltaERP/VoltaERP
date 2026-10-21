@@ -1,9 +1,28 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './shared/layout/main-layout/main-layout';
+import {AuthLayout} from './shared/layout/auth-layout/auth-layout/auth-layout';
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
+import {guestGuard} from './core/guards/guest.guard';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: AuthLayout,
+    canActivate: [guestGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./feature/auth/login/login').then((m) => m.Login),
+      },
+    ],
+  },
   {
     path: '',
     component: MainLayout,
@@ -50,6 +69,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
   },
 ];
