@@ -1,23 +1,21 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Role, User, LoginCredentials } from '../models/user.model';
+import {HttpClient} from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Role, User, LoginCredentials, AuthResponse } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly API_URL = 'http://localhost:3000/api/auth';
 
-  // Usuario inicial de prueba para desarrollo local
-  readonly currentUser = signal<User | null>({
-    id: 1,
-    nombre: 'Administrador Volta',
-    email: 'admin@voltaerp.com',
-    rol: 'ADMIN',
-    activo: true,
-  });
-
-  readonly token = signal<string | null>('mock-jwt-token');
+  // Recuperar sesión persitida en localStorage al arrancar
+  readonly currentUser = signal<User | null>(this.loadUserFromStorage());
+  readonly token = signal<string | null>(localStorage.getItem('token'));
 
   readonly isAuthenticated = computed(() => !!this.currentUser());
   readonly userRole = computed(() => this.currentUser()?.rol ?? null);
@@ -30,20 +28,32 @@ export class AuthService {
     return allowedRoles.includes(role);
   }
 
-  login(credentials: LoginCredentials): void {
-    // Se conectará con HttpClient cuando el endpoint de backend esté listo
-    console.log('Login credentials:', credentials);
+  login(credentials: LoginCredentials): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.API_URL}/login`, credentials).pipe(
+      tap((response) => {
+        const user: User = {...response.usuario, activo: true};
+        this.currentUser.set(user);
+        this.token.set(response.token);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(user));
+      })
+    );
   }
 
   logout(): void {
     this.currentUser.set(null);
     this.token.set(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     void this.router.navigate(['/login']);
   }
 
-  // Permite simular cambios de rol durante el desarrollo
-  setMockRole(role: Role): void {
-    this.currentUser.update((user) => (user ? { ...user, rol: role } : null));
+  private loadUserFromStorage(): User | null {
+      try {
+        const raw = localStorage.getItem('user');
+        return raw ? (JSON.parse(raw) as User) : null;
+      } catch {
+        return null;
+      }
   }
 }
