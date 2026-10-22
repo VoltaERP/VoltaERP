@@ -6,6 +6,7 @@ import './models/index.js'
 import authRoutes from './routes/auth.routes.js'
 import errorHandler from "./middlewares/errorHandler.js";
 import usuariosRoutes from './routes/usuarios.routes.js'
+import clientesRoutes from './routes/clientes.routes.js'
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 //Le decimos a Express que todas las rutas de auth empiecen por /api/auth
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/clientes', clientesRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
