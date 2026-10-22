@@ -7,6 +7,8 @@ import authRoutes from './routes/auth.routes.js'
 import errorHandler from "./middlewares/errorHandler.js";
 import usuariosRoutes from './routes/usuarios.routes.js'
 import clientesRoutes from './routes/clientes.routes.js'
+import categoriasRoutes from './routes/categorias.routes.js'
+import tiposIvaRoutes from './routes/tiposIva.routes.js'
 
 const app = express();
 
@@ -23,6 +25,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/clientes', clientesRoutes);
+app.use('/api/categorias', categoriasRoutes);
+app.use('/api/tiposiva', tiposIvaRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
