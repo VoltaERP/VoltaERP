@@ -59,6 +59,13 @@ export const routes: Routes = [
           import('./feature/compras/compras').then((m) => m.Compras),
       },
       {
+        path: 'usuarios',
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN'] },
+        loadComponent: () =>
+          import('./feature/usuarios/usuarios').then((m) => m.Usuarios),
+      },
+      {
         path: 'configuracion',
         canActivate: [roleGuard],
         data: { roles: ['ADMIN'] },

@@ -85,6 +85,10 @@ export const cambiarRolUsuario = async (req, res, next) => {
         if(!['ADMIN', 'GESTOR', 'EMPLEADO'].includes(rol)){
             return res.status(400).json({error: "Rol no válido"});
         }
+        //un admin no puede cambiarse su propio rol (evita quedarse sin acceso)
+        if (req.usuario.id === parseInt(id)) {
+            return res.status(400).json({error: "No puedes cambiar tu propio rol"});
+        }
         //comprobamos que el usuario existe
         const usuario = await Usuario.findByPk(id);
         if (!usuario) {
