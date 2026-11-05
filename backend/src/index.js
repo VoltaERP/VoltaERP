@@ -10,6 +10,7 @@ import clientesRoutes from './routes/clientes.routes.js'
 import categoriasRoutes from './routes/categorias.routes.js'
 import tiposIvaRoutes from './routes/tiposIva.routes.js'
 import proveedoresRoutes from './routes/proveedores.routes.js'
+import productosRoutes from './routes/productos.routes.js'
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/clientes', clientesRoutes);
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/tiposiva', tiposIvaRoutes);
 app.use('/api/proveedores', proveedoresRoutes);
+app.use('/api/productos', productosRoutes);
 app.use(errorHandler);
 
 const port = process.env.PORT || 3000;
