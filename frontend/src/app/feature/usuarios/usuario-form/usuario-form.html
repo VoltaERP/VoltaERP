@@ -1,0 +1,127 @@
+<dialog
+  #dialogo
+  aria-labelledby="titulo-form-usuario"
+  (close)="onDialogoCerrado()"
+  class="m-auto w-full max-w-md rounded-lg bg-white p-0 shadow-xl backdrop:bg-gray-900/50"
+>
+  <form novalidate (submit)="guardar($event)">
+    <!-- Cabecera -->
+    <div class="flex items-center justify-between border-b border-gray-200 p-4">
+      <h2 id="titulo-form-usuario" class="text-lg font-semibold text-gray-900">
+        {{ esEdicion() ? 'Editar usuario' : 'Añadir usuario' }}
+      </h2>
+      <button
+        type="button"
+        (click)="cerrar()"
+        aria-label="Cerrar"
+        class="inline-flex w-8 h-8 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Campos -->
+    <div class="space-y-4 p-4">
+      @if (errorGeneral()) {
+        <p class="rounded-lg bg-red-50 p-3 text-sm text-red-800" role="alert">{{ errorGeneral() }}</p>
+      }
+
+      <div>
+        <label for="usuario-nombre" class="mb-1.5 block text-sm font-medium text-gray-900">Nombre</label>
+        <input
+          id="usuario-nombre"
+          type="text"
+          autocomplete="name"
+          [formField]="formulario.nombre"
+          [attr.aria-invalid]="formulario.nombre().touched() && formulario.nombre().invalid()"
+          aria-describedby="usuario-nombre-error"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 aria-invalid:border-red-600"
+        />
+        <div id="usuario-nombre-error" class="mt-1 text-sm text-red-700">
+          @if (formulario.nombre().touched()) {
+            @for (err of formulario.nombre().errors(); track err.kind) {
+              <p>{{ err.message }}</p>
+            }
+          }
+        </div>
+      </div>
+
+      <div>
+        <label for="usuario-email" class="mb-1.5 block text-sm font-medium text-gray-900">Email</label>
+        <input
+          id="usuario-email"
+          type="email"
+          autocomplete="email"
+          [formField]="formulario.email"
+          [attr.aria-invalid]="formulario.email().touched() && formulario.email().invalid()"
+          aria-describedby="usuario-email-error"
+          class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 aria-invalid:border-red-600"
+        />
+        <div id="usuario-email-error" class="mt-1 text-sm text-red-700">
+          @if (formulario.email().touched()) {
+            @for (err of formulario.email().errors(); track err.kind) {
+              <p>{{ err.message }}</p>
+            }
+          }
+        </div>
+      </div>
+
+      @if (!formulario.password().hidden()) {
+        <div>
+          <label for="usuario-password" class="mb-1.5 block text-sm font-medium text-gray-900">Contraseña</label>
+          <input
+            id="usuario-password"
+            type="password"
+            autocomplete="new-password"
+            [formField]="formulario.password"
+            [attr.aria-invalid]="formulario.password().touched() && formulario.password().invalid()"
+            aria-describedby="usuario-password-error"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 aria-invalid:border-red-600"
+          />
+          <div id="usuario-password-error" class="mt-1 text-sm text-red-700">
+            @if (formulario.password().touched()) {
+              @for (err of formulario.password().errors(); track err.kind) {
+                <p>{{ err.message }}</p>
+              }
+            }
+          </div>
+        </div>
+      }
+
+      @if (!formulario.rol().hidden()) {
+        <div>
+          <label for="usuario-rol" class="mb-1.5 block text-sm font-medium text-gray-900">Rol</label>
+          <select
+            id="usuario-rol"
+            [formField]="formulario.rol"
+            class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          >
+            @for (rol of roles; track rol) {
+              <option [value]="rol">{{ etiquetasRol[rol] }}</option>
+            }
+          </select>
+        </div>
+      }
+    </div>
+
+    <!-- Pie -->
+    <div class="flex justify-end gap-3 border-t border-gray-200 p-4">
+      <button
+        type="button"
+        (click)="cerrar()"
+        class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="formulario().submitting()"
+        class="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {{ formulario().submitting() ? 'Guardando…' : esEdicion() ? 'Guardar cambios' : 'Crear usuario' }}
+      </button>
+    </div>
+  </form>
+</dialog>

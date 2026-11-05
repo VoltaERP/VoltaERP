@@ -26,6 +26,7 @@ export class Sidebar {
     { label: 'Catálogo e Inventario', route: '/catalogo', icon: 'box' },
     { label: 'Ventas', route: '/ventas', icon: 'shopping-cart' },
     { label: 'Compras', route: '/compras', icon: 'truck' },
+    { label: 'Usuarios', route: '/usuarios', icon: 'user-cog', roles: ['ADMIN'] },
     { label: 'Configuración', route: '/configuracion', icon: 'settings', roles: ['ADMIN'] },
   ]);
 
