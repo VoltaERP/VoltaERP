@@ -10,6 +10,18 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface CrearUsuarioDto {
+  nombre: string;
+  email: string;
+  password: string;
+  rol: Role;
+}
+
+export interface EditarUsuarioDto {
+  nombre: string;
+  email: string;
+}
+
 export interface LoginCredentials {
   email: string;
   password: string;
